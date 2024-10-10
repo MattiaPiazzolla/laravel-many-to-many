@@ -16,7 +16,7 @@
         @include('partials.sidebar')
         <div id="content">
             @include('partials.header')
-            <main>
+            <main class=" overflow-scroll">
                 @yield('main-content')
             </main>
         </div>
