@@ -14,7 +14,13 @@
                 <p class="mt-5">{{ $project->slug }}</p>
                 <p>{{ $project->summary }}</p>
                 <p>{{ $project->category ? $project->category->name : 'Nessuna Categoria' }}</p>
-
+                <p>
+                    @forelse ($project->technologies as $technology)
+                        {{ $technology->name }}
+                    @empty
+                        Il progetto non ha tecnologie assegnate
+                    @endforelse
+                </p>
 
             </div>
         </div>
