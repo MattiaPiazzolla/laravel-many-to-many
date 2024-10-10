@@ -146,6 +146,8 @@ class ProjectController extends Controller
             Storage::delete($project->project_image);
        }
 
+       $project->technologies()->sync([]);
+
         $project->delete();
 
         return redirect()->route('admin.projects.index');
