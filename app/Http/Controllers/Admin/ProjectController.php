@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Project;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProjectRequest;
@@ -32,7 +33,10 @@ class ProjectController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.projects.create', compact('categories'));
+        
+        $technologies = Technology::all(); 
+
+        return view('admin.projects.create', compact('categories', 'technologies'));
     }
 
     /**
@@ -40,29 +44,32 @@ class ProjectController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProjectRequest $request)
-    {
-        // Tutti i dati validati sono ora accessibili tramite $request->validated()
-        $form_data = $request->validated();
+     */public function store(StoreProjectRequest $request)
+{
+    // Tutti i dati validati sono ora accessibili tramite $request->validated()
+    $form_data = $request->validated();
 
-        // Aggiungi lo slug generato
-        $form_data['slug'] = Project::generateSlug($form_data['name']);
+    // Aggiungi lo slug generato
+    $form_data['slug'] = Project::generateSlug($form_data['name']);
 
-        // Gestisci il caricamento dell'immagine, se presente
-        if ($request->hasFile('project_image')) {
-            $path = Storage::disk('public')->put('project_image', $form_data['project_image']);
-            $form_data['project_image'] = $path;
-        }
-        else {
-            $form_data['project_image'] = 'https://placehold.co/600x400?text=MISSING+IMG';
-        }
-
-        // Crea il progetto
-        $project = Project::create($form_data);
-
-        return redirect()->route('admin.projects.index')->with('success', 'Progetto creato con successo.');
+    // Gestisci il caricamento dell'immagine, se presente
+    if ($request->hasFile('project_image')) {
+        $path = Storage::disk('public')->put('project_image', $form_data['project_image']);
+        $form_data['project_image'] = $path;
+    } else {
+        $form_data['project_image'] = 'https://placehold.co/600x400?text=MISSING+IMG';
     }
+
+    // Crea il progetto
+    $project = Project::create($form_data);
+
+    // Gestisci l'associazione delle tecnologie
+    if ($request->has('technologies')) {
+        $project->technologies()->sync($request->input('technologies')); 
+    }
+
+    return redirect()->route('admin.projects.index')->with('success', 'Progetto creato con successo.');
+}
 
     /**
      * Display the specified resource.

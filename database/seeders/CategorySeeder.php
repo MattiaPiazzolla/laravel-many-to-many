@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Category;
-
 use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
@@ -20,7 +19,7 @@ class CategorySeeder extends Seeder
         $categories = [
             'HTML',
             'CSS',
-            'JS',
+            'JavaScript', 
             'Laravel',
             'PHP',
             'Vite',
@@ -28,13 +27,10 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $cat) {
-            
-            $category= new Category();
-            $category->name =$cat;
-            $category->slug = Str::slug($cat,'-');
-
-            $category->save();
-
+            Category::create([
+                'name' => $cat,
+                'slug' => Str::slug($cat, '-'),
+            ]);
         }
     }
 }
