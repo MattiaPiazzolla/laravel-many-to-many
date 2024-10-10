@@ -17,8 +17,12 @@ class Project extends Model
         return Str::slug($title, '-');
     }
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
+    public function category(){
+        return $this->belongsToM(Category::class);
     }
+    
+    public function technologies(){
+        return $this->belongsToMany(Technology::class);
+    }
+
 }
