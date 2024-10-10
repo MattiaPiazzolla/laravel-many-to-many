@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('main-content')
-    <div class="container-fluid">
+    <div class="container-fluid main-dashboard">
         <div class="row">
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -9,7 +9,7 @@
                     <a href="{{ route('admin.projects.create') }}" class="btn btn-sm btn-primary">Aggiungi Progetto</a>
                 </div>
             </div>
-            <div class="col-12 overflow-scroll">
+            <div class="col-12 ">
                 <table class="table table-hover table-striped table-bordered">
                     <thead class="thead-dark">
                         <tr>
